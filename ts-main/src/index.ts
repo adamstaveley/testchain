@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(morgan('tiny'));
 
-const port = process.argv[process.argv.length - 1];
+const port = parseInt(process.argv[process.argv.length - 1], 10) || 8000;
 
 // generate globally unique address for this node
 const nodeIdentifier = uuid4().replace(/-/g, '');
@@ -42,7 +42,7 @@ app.get('/mine', (req, res): void => {
 });
 
 app.post('/transactions/new', (req, res): void => {
-    const values = req.body;
+    const values: Transaction = req.body;
 
     // create new transaction
     const index = blockchain.newTransaction(values);

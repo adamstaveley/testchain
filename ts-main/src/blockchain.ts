@@ -10,7 +10,7 @@ export class Blockchain {
     /**
      * Creates a SHA-256 hash of a block
      */
-    static hash(block: Block): string {
+    private static hash(block: Block): string {
         const blockString = JSON.stringify(block, Object.keys(block).sort());
         return crypto.createHash('sha256').update(blockString).digest('hex');
     }
@@ -18,7 +18,7 @@ export class Blockchain {
     /**
      * Validates the proof: does hash(p, p') contain 4 leading zeros?
      */
-    static validProof(lastProof: number, proof: number): boolean {
+    private static validProof(lastProof: number, proof: number): boolean {
         const guess = `${lastProof}${proof}`;
         const guessHash = crypto.createHash('sha256').update(guess).digest('hex');
         return guessHash.slice(-4) === '0000';
@@ -107,7 +107,7 @@ export class Blockchain {
                     resolveWithFullResponse: true
                 };
 
-                request(options).then(res => {
+                request(options).then((res: any) => {
                     if (res.statusCode === 200) {
                         const body = JSON.parse(res.body);
                         const length = body.length;
